@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzd.news.dao.NewsDictMapper">
+  <resultMap id="BaseResultMap" type="com.zzd.news.pojo.NewsDict">
+    <constructor>
+      <idArg column="news_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="news_title" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="news_text" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="news_publisher" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="news_img" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    news_id, news_title, news_text, news_publisher, news_img
+  </sql>
+  <select id="selectByExample" parameterType="com.zzd.news.pojo.NewsDictExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from news_dict
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from news_dict
+    where news_id = #{newsId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from news_dict
+    where news_id = #{newsId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zzd.news.pojo.NewsDictExample">
+    delete from news_dict
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zzd.news.pojo.NewsDict">
+    insert into news_dict (news_id, news_title, news_text, 
+      news_publisher, news_img)
+    values (#{newsId,jdbcType=INTEGER}, #{newsTitle,jdbcType=VARCHAR}, #{newsText,jdbcType=VARCHAR}, 
+      #{newsPublisher,jdbcType=VARCHAR}, #{newsImg,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zzd.news.pojo.NewsDict">
+    insert into news_dict
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="newsId != null">
+        news_id,
+      </if>
+      <if test="newsTitle != null">
+        news_title,
+      </if>
+      <if test="newsText != null">
+        news_text,
+      </if>
+      <if test="newsPublisher != null">
+        news_publisher,
+      </if>
+      <if test="newsImg != null">
+        news_img,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="newsId != null">
+        #{newsId,jdbcType=INTEGER},
+      </if>
+      <if test="newsTitle != null">
+        #{newsTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="newsText != null">
+        #{newsText,jdbcType=VARCHAR},
+      </if>
+      <if test="newsPublisher != null">
+        #{newsPublisher,jdbcType=VARCHAR},
+      </if>
+      <if test="newsImg != null">
+        #{newsImg,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zzd.news.pojo.NewsDictExample" resultType="java.lang.Long">
+    select count(*) from news_dict
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update news_dict
+    <set>
+      <if test="record.newsId != null">
+        news_id = #{record.newsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.newsTitle != null">
+        news_title = #{record.newsTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.newsText != null">
+        news_text = #{record.newsText,jdbcType=VARCHAR},
+      </if>
+      <if test="record.newsPublisher != null">
+        news_publisher = #{record.newsPublisher,jdbcType=VARCHAR},
+      </if>
+      <if test="record.newsImg != null">
+        news_img = #{record.newsImg,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update news_dict
+    set news_id = #{record.newsId,jdbcType=INTEGER},
+      news_title = #{record.newsTitle,jdbcType=VARCHAR},
+      news_text = #{record.newsText,jdbcType=VARCHAR},
+      news_publisher = #{record.newsPublisher,jdbcType=VARCHAR},
+      news_img = #{record.newsImg,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zzd.news.pojo.NewsDict">
+    update news_dict
+    <set>
+      <if test="newsTitle != null">
+        news_title = #{newsTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="newsText != null">
+        news_text = #{newsText,jdbcType=VARCHAR},
+      </if>
+      <if test="newsPublisher != null">
+        news_publisher = #{newsPublisher,jdbcType=VARCHAR},
+      </if>
+      <if test="newsImg != null">
+        news_img = #{newsImg,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where news_id = #{newsId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zzd.news.pojo.NewsDict">
+    update news_dict
+    set news_title = #{newsTitle,jdbcType=VARCHAR},
+      news_text = #{newsText,jdbcType=VARCHAR},
+      news_publisher = #{newsPublisher,jdbcType=VARCHAR},
+      news_img = #{newsImg,jdbcType=VARCHAR}
+    where news_id = #{newsId,jdbcType=INTEGER}
+  </update>
+</mapper>
